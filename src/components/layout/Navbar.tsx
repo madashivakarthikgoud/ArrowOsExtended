@@ -84,7 +84,7 @@ const Navbar: React.FC = () => {
             
             <div className="pl-3 flex items-center space-x-2 border-l border-dark-700 ml-2">
               <a 
-                href="https://github.com/ArrowOS-Extended"
+                href="https://github.com/HinohArata"
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-lg text-dark-100 hover:text-white hover:bg-dark-800 transition-colors"
@@ -135,7 +135,7 @@ const Navbar: React.FC = () => {
                 ))}
                 <div className="border-t border-dark-700 my-2 pt-2">
                   <a 
-                    href="https://github.com/ArrowOS-Extended"
+                    href="https://github.com/HinohArata"
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="nav-item py-2 flex items-center"

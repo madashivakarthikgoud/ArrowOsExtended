@@ -63,7 +63,7 @@ const ChangelogPage: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <a
-                href="https://github.com/ArrowOS-Extended"
+                href="https://github.com/ArrowOS-Ext/OTA"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-primary"
@@ -72,7 +72,7 @@ const ChangelogPage: React.FC = () => {
               </a>
               
               <a
-                href="https://t.me/ArrowOS"
+                href="https://t.me/arrowosextended_updates"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-outline"

@@ -22,11 +22,11 @@ const Footer: React.FC = () => {
               ArrowOS-Extended is a custom Android ROM that focuses on performance, stability, and a clean user experience with minimal customization options.
             </p>
             <div className="flex space-x-4">
-              <a href="https://github.com/ArrowOS-Extended" target="_blank" rel="noopener noreferrer" 
+              <a href="https://github.com/ArrowOS-Ext/OTA" target="_blank" rel="noopener noreferrer" 
                 className="text-dark-300 hover:text-white transition-colors">
                 <Github size={20} />
               </a>
-              <a href="https://twitter.com/ArrowOS" target="_blank" rel="noopener noreferrer" 
+              <a href="#" target="_blank" rel="noopener noreferrer" 
                 className="text-dark-300 hover:text-white transition-colors">
                 <Twitter size={20} />
               </a>
@@ -47,25 +47,25 @@ const Footer: React.FC = () => {
             <h3 className="font-semibold mb-4 text-lg">Resources</h3>
             <ul className="space-y-2 text-dark-300">
               <li>
-                <a href="https://github.com/ArrowOS-Extended" target="_blank" rel="noopener noreferrer" 
+                <a href="https://github.com/ArrowOS-Ext/OTA" target="_blank" rel="noopener noreferrer" 
                   className="hover:text-white transition-colors flex items-center">
                   GitHub <ExternalLink size={14} className="ml-1" />
                 </a>
               </li>
               <li>
-                <a href="https://t.me/ArrowOS" target="_blank" rel="noopener noreferrer" 
+                <a href="https://t.me/arrowosextended_updates" target="_blank" rel="noopener noreferrer" 
                   className="hover:text-white transition-colors flex items-center">
                   Telegram <ExternalLink size={14} className="ml-1" />
                 </a>
               </li>
               <li>
-                <a href="https://forum.xda-developers.com/" target="_blank" rel="noopener noreferrer" 
+                <a href="#" target="_blank" rel="noopener noreferrer" 
                   className="hover:text-white transition-colors flex items-center">
                   XDA Forums <ExternalLink size={14} className="ml-1" />
                 </a>
               </li>
               <li>
-                <a href="https://sourceforge.net/projects/arrowos/" target="_blank" rel="noopener noreferrer" 
+                <a href="https://github.com/ArrowOS-Ext/OTA" target="_blank" rel="noopener noreferrer" 
                   className="hover:text-white transition-colors flex items-center">
                   SourceForge <ExternalLink size={14} className="ml-1" />
                 </a>

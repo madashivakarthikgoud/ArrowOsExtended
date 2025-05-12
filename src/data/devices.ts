@@ -1,3 +1,4 @@
+// src/data/devices.ts
 export interface Device {
   name: string;
   brand: string;
@@ -6,17 +7,19 @@ export interface Device {
   lastUpdate: string;
   androidVersion: string;
   image?: string;
+  downloadUrl: string; // Direct link to download
 }
 
 export const devices: Device[] = [
   {
-    name: 'Poco x3 NFC / Poco x3',
+    name: 'Poco X3 NFC / Poco X3',
     brand: 'Poco',
-    codename: 'surya / karna',
+    codename: 'surya',
     maintainer: 'ArrowTeam',
     lastUpdate: 'June 15, 2025',
     androidVersion: '13',
-    image: 'images/pocox3.avif'
+    image: 'images/pocox3.avif',
+    downloadUrl: 'https://sourceforge.net/projects/arata-labs/files/ArrowOS-Extended/VANILLA/surya/ArrowExtended-v13.3-surya-OFFICIAL-20250510-VANILLA.zip/download'
   },
   {
     name: 'Pixel 7',
@@ -25,60 +28,17 @@ export const devices: Device[] = [
     maintainer: 'ArrowTeam',
     lastUpdate: 'June 15, 2025',
     androidVersion: '13',
-    image: 'https://images.pexels.com/photos/13092897/pexels-photo-13092897.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-  },
-  {
-    name: 'Pixel 6 Pro',
-    brand: 'Google',
-    codename: 'raven',
-    maintainer: 'ArrowTeam',
-    lastUpdate: 'June 10, 2025',
-    androidVersion: '13',
-    image: 'https://images.pexels.com/photos/13092897/pexels-photo-13092897.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-  },
-  {
-    name: 'Galaxy S21',
-    brand: 'Samsung',
-    codename: 'o1s',
-    maintainer: 'SamsungDev',
-    lastUpdate: 'June 8, 2025',
-    androidVersion: '13',
-    image: 'https://images.pexels.com/photos/9072216/pexels-photo-9072216.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-  },
-  {
-    name: 'Galaxy S21 Ultra',
-    brand: 'Samsung',
-    codename: 'o1u',
-    maintainer: 'SamsungDev',
-    lastUpdate: 'June 8, 2025',
-    androidVersion: '13',
-    image: 'https://images.pexels.com/photos/9072216/pexels-photo-9072216.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    image: 'images/pixel7pro.jpg',
+    downloadUrl: 'https://download.arrowos.org/panther/arrowos-extended-panther-20250615.zip'
   },
   {
     name: 'OnePlus 9 Pro',
     brand: 'OnePlus',
     codename: 'lemonadep',
-    maintainer: 'OneDev',
-    lastUpdate: 'June 5, 2025',
-    androidVersion: '13',
-    image: 'https://images.pexels.com/photos/14894269/pexels-photo-14894269.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-  },
-  {
-    name: 'OnePlus 9',
-    brand: 'OnePlus',
-    codename: 'lemonade',
-    maintainer: 'OneDev',
-    lastUpdate: 'June 5, 2025',
-    androidVersion: '13',
-    image: 'https://images.pexels.com/photos/14894269/pexels-photo-14894269.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-  },
-  {
-    name: 'Mi 11 Ultra',
-    brand: 'Xiaomi',
-    codename: 'star',
-    maintainer: 'XiaomiDev',
-    lastUpdate: 'June 1, 2025',
-    androidVersion: '13',
-    image: 'https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    maintainer: 'ArrowTeam',
+    lastUpdate: 'June 10, 2025',
+    androidVersion: '12',
+    image: 'images/oneplus9pro.png',
+    downloadUrl: 'https://downloads.example.com/lemonadep/oneplus9pro-build.zip'
   }
 ];
