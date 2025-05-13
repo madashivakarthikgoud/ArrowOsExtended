@@ -11,6 +11,24 @@ export interface ChangelogEntry {
 
 export const changelogData: ChangelogEntry[] = [
   {
+    version: 'v13.4 Device Changelog',
+    date: 'May 10, 2025',
+    changes: [
+      {
+        type: 'improvement',
+        description: 'Synced with latest source (May Security Patch)'
+      },
+      {
+        type: 'feature',
+        description: 'Add bypass charge tile support'
+      },
+      {
+        type: 'improvement',
+        description: 'More improvements'
+      }
+    ]
+  },
+  {
     version: 'v13.3',
     date: 'May 05, 2025',
     changes: [
@@ -82,6 +100,24 @@ export const changelogData: ChangelogEntry[] = [
       //   type: 'security',
       //   description: 'Updated to the latest June 2025 security patch'
       // }
+    ]
+  },
+  {
+    version: 'v13.3 Device Changelog',
+    date: 'May 1, 2025',
+    changes: [
+      {
+        type: 'improvement',
+        description: 'Initial builds'
+      },
+      {
+        type: 'feature',
+        description: 'Leica camera included'
+      },
+      {
+        type: 'feature',
+        description: 'XiaomiParts included'
+      }
     ]
   }
 ];
