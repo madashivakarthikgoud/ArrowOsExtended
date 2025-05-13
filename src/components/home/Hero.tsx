@@ -127,14 +127,36 @@ const Hero: React.FC = () => {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Phone Container */}
-              <div className="absolute inset-0 z-10 rounded-[2.5rem] md:rounded-[3rem] border-[12px] md:border-[14px] border-dark-950/90 overflow-hidden shadow-2xl backdrop-blur-xl">
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary-500/10 via-secondary-500/10 to-accent-500/10" />
-                <img
-                  src="images/1.png"
-                  alt="ArrowOS-Extended screenshot"
-                  className="w-full h-full object-cover rounded-[2rem] md:rounded-[2.25rem]"
-                />
+              <div className="relative px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+                {/* “Border” wrapper uses padding instead of border-width */}
+                <div
+                  className="
+      relative
+      rounded-[2.5rem] md:rounded-[3rem]
+      p-[12px] md:p-[14px]
+      bg-dark-950/90
+      overflow-hidden
+      shadow-2xl
+      backdrop-blur-xl
+    "
+                >
+                  {/* gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary-500/10 via-secondary-500/10 to-accent-500/10 pointer-events-none" />
+
+                  {/* screenshot image fills the padded area exactly */}
+                  <img
+                    src="images/1.png"
+                    alt="ArrowOS-Extended screenshot"
+                    className="
+        relative
+        w-full h-full
+        object-cover
+        rounded-[2rem] md:rounded-[2.25rem]
+      "
+                  />
+                </div>
               </div>
+
 
               {/* Decorative Background */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-primary-500/20 via-secondary-500/20 to-accent-500/20 rounded-full blur-3xl -z-10" />

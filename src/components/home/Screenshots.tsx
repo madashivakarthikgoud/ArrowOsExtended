@@ -25,9 +25,48 @@ const fadeVariants = {
   exit: (dir: number) => ({ x: dir < 0 ? 150 : -150, opacity: 0, transition: { duration: 0.6, ease: 'easeInOut' } }),
 };
 
+// Hint SVG with drop-shadow
+const HintSvg = () => (
+  <svg
+    width="120"
+    height="80"
+    viewBox="0 0 120 80"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="drop-shadow-lg"
+  >
+    <defs>
+      <linearGradient id="arrowGrad" x1="0" y1="40" x2="120" y2="40" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFF" stopOpacity="0" />
+        <stop offset="50%" stopColor="#FFF" stopOpacity="0.8" />
+        <stop offset="100%" stopColor="#FFF" stopOpacity="0" />
+      </linearGradient>
+    </defs>
+    <path d="M100 40 H20" stroke="url(#arrowGrad)" strokeWidth="8" strokeLinecap="round" />
+    <path d="M30 30 L20 40 L30 50" fill="white" />
+    <path d="M90 40 C90 20, 60 20, 60 40 S90 60, 90 40" fill="rgba(255,255,255,0.8)" />
+  </svg>
+);
+
+// Hint animation
+const hintVariants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: {
+    opacity: [0.8, 0.4, 0.8],
+    scale: [1, 1.1, 1],
+    transition: { duration: 1.5, ease: 'easeInOut', repeat: Infinity },
+  },
+};
+
 const Screenshots: React.FC = () => {
-  const [[currentIndex, direction], setIndex] = useState([0, 0]);
+  const [[currentIndex, direction], setIndex] = useState<[number, number]>([0, 0]);
+  const [showHint, setShowHint] = useState(false);
   const autoPlayRef = useRef<number>();
+
+  // Show hint only on small screens
+  useEffect(() => {
+    if (window.innerWidth <= 410) setShowHint(true);
+  }, []);
 
   const paginate = useCallback((dir: number) => {
     setIndex(([i]) => [
@@ -36,23 +75,28 @@ const Screenshots: React.FC = () => {
     ]);
   }, []);
 
+  const handleDragStart = () => {
+    if (showHint) setShowHint(false);
+  };
+
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 80;
     if (info.offset.x < -threshold) paginate(1);
     else if (info.offset.x > threshold) paginate(-1);
   };
 
+  // Auto-advance on large screens
   useEffect(() => {
-    const isLargeScreen = window.innerWidth > 410;
-    clearTimeout(autoPlayRef.current);
-    if (isLargeScreen) {
+    if (window.innerWidth > 410) {
+      clearTimeout(autoPlayRef.current);
       autoPlayRef.current = window.setTimeout(() => paginate(1), 5000);
+      return () => clearTimeout(autoPlayRef.current);
     }
-    return () => clearTimeout(autoPlayRef.current);
   }, [currentIndex, paginate]);
 
-
-  const { url, title, description } = screenshots[currentIndex];
+  // Safe index
+  const safeIndex = Math.max(0, Math.min(currentIndex, screenshots.length - 1));
+  const { url, title, description } = screenshots[safeIndex];
 
   return (
     <Section
@@ -62,7 +106,29 @@ const Screenshots: React.FC = () => {
       centered
       className="bg-dark-950 py-12 md:py-20 lg:py-24"
     >
-      <div className="relative px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto overflow-hidden cursor-grab">
+      {/* Outer wrapper now overflow-visible to show full image */}
+      <div className="relative px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto overflow-visible cursor-grab">
+        <AnimatePresence>
+          {/* Hint centered on image, small screens */}
+          {showHint && (
+            <motion.div
+              key="hint"
+              variants={hintVariants}
+              initial="initial"
+              animate="animate"
+              className="absolute"
+              style={{
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                pointerEvents: 'none',
+              }}
+            >
+              <HintSvg />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={url}
@@ -74,22 +140,21 @@ const Screenshots: React.FC = () => {
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.25}
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             className="flex flex-col lg:flex-row items-center justify-center gap-8 w-full"
           >
-            {/* Responsive Image */}
-            <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 aspect-[9/19] flex-shrink-0">
+            <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 aspect-[9/19] flex-shrink-0 overflow-visible">
               <motion.img
                 src={url}
                 alt={title}
-                className="w-full h-full object-cover rounded-3xl shadow-lg"
+                className="w-full h-auto object-cover rounded-3xl shadow-lg"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, transition: { duration: 0.7 } }}
                 exit={{ opacity: 0, transition: { duration: 0.5 } }}
               />
             </div>
 
-            {/* Responsive Text below image on small screens */}
             <motion.div
               className="w-full lg:w-auto text-center lg:text-left"
               initial={{ opacity: 0 }}
