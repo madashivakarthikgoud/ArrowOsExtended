@@ -24,7 +24,6 @@ const Screenshots = () => {
   const dragStart = useRef(0);
   const autoPlayRef = useRef();
   const imageRef = useRef(null);
-  const containerRef = useRef();
 
   const paginate = useCallback(
     dir => {
@@ -35,7 +34,7 @@ const Screenshots = () => {
     [screenshots.length]
   );
 
-  // Preload images with priority
+  // Preload images
   useEffect(() => {
     const preloadImages = [
       screenshots[(currentIndex + 1) % screenshots.length].url,
@@ -43,13 +42,11 @@ const Screenshots = () => {
     ];
 
     preloadImages.forEach(src => {
-      const img = new Image();
-      img.src = src;
-      img.loading = 'eager';
+      new Image().src = src;
     });
   }, [currentIndex]);
 
-  // Unified gesture handling
+  // Gesture handling
   const handleDragStart = useCallback(clientX => {
     dragStart.current = clientX;
   }, []);
@@ -89,7 +86,7 @@ const Screenshots = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Optimized autoplay
+  // Autoplay
   useEffect(() => {
     if (!isMobile && !hasInteracted) {
       autoPlayRef.current = setInterval(() => paginate(1), 4500);
@@ -98,76 +95,71 @@ const Screenshots = () => {
   }, [isMobile, hasInteracted, paginate]);
 
   const { url, title, description } = screenshots[currentIndex];
-  const showSwipeHint = !hasInteracted;
+  const showSwipeHint = !hasInteracted && isMobile;
 
   return (
-    <Section id="screenshots" title="Experience ArrowOS-Extended" subtitle="See how our custom ROM transforms your Android experience." centered className="bg-dark-950 py-8 md:py-12">
+    <Section id="screenshots" 
+      title="Experience ArrowOS-Extended" 
+      subtitle="See how our custom ROM transforms your Android experience." 
+      centered 
+      className="bg-dark-950 py-6 md:py-10 lg:py-12"
+    >
       <div 
-        ref={containerRef}
-        className="relative px-4 max-w-4xl mx-auto select-none"
+        className="relative px-4 w-full max-w-4xl mx-auto select-none"
+        style={{ touchAction: 'pan-y' }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onMouseDown={handleMouseDown}
-        style={{ touchAction: 'pan-y' }}
       >
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-6 w-full">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-6 lg:gap-8 w-full">
           {/* Image Container */}
-          <div className="w-full lg:w-1/2 xl:w-1/3 flex-shrink-0 relative"
-            style={{ maxWidth: 'min(100%, 400px)' }}>
-            <img
-              ref={imageRef}
-              src={url}
-              alt={title}
-              loading="eager"
-              className="w-full h-auto object-contain rounded-xl md:rounded-2xl shadow-xl transition-opacity duration-200"
-              style={{ 
-                aspectRatio: '9/16',
-                opacity: 1,
-                imageRendering: '-webkit-optimize-contrast'
-              }}
-            />
-            
-            {/* Swipe Indicator */}
-            {showSwipeHint && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                style={{ top: '50%', transform: 'translateY(-50%)' }}>
-                <div className="flex items-center gap-2 text-white backdrop-blur-sm bg-black/30 px-4 py-2 rounded-full shadow-lg border border-white/10 animate-pulse"
-                  style={{
-                    fontSize: 'clamp(0.75rem, 1.5vw, 1rem)',
-                    padding: 'clamp(6px, 1.2vw, 10px) clamp(12px, 2vw, 16px)'
-                  }}>
-                  <svg 
-                    className="inline-block"
-                    style={{ width: 'clamp(16px, 2.5vw, 20px)', height: 'clamp(16px, 2.5vw, 20px)' }}
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                  <span className="whitespace-nowrap">
-                    {isMobile ? 'Swipe' : 'Drag'}
-                  </span>
-                  <svg 
-                    className="inline-block"
-                    style={{ width: 'clamp(16px, 2.5vw, 20px)', height: 'clamp(16px, 2.5vw, 20px)' }}
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+          <div className="w-full lg:flex-1 max-w-[400px] xl:max-w-[450px]">
+            <div className="relative aspect-[9/16]">
+              <img
+                ref={imageRef}
+                src={url}
+                alt={title}
+                loading="eager"
+                className="w-full h-full object-contain rounded-lg md:rounded-xl shadow-xl"
+                style={{ 
+                  imageRendering: '-webkit-optimize-contrast',
+                  contain: 'content'
+                }}
+              />
+              
+              {/* Mobile-only Swipe Indicator */}
+              {showSwipeHint && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="flex items-center gap-2 text-white backdrop-blur-sm bg-black/30 px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-lg border border-white/10 animate-pulse">
+                    <svg 
+                      className="w-4 h-4 md:w-5 md:h-5"
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span className="text-xs md:text-sm">Swipe</span>
+                    <svg 
+                      className="w-4 h-4 md:w-5 md:h-5"
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Text Content */}
-          <div className="w-full lg:w-auto text-center lg:text-left px-4 md:px-0">
-            <h3 className="text-xl md:text-2xl xl:text-3xl font-bold text-white mb-2 md:mb-3">
+          <div className="w-full lg:flex-1 px-4 md:px-6 lg:px-0 text-center lg:text-left">
+            <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-white mb-2 md:mb-3">
               {title}
             </h3>
-            <p className="text-sm md:text-base text-gray-300 leading-relaxed max-w-prose">
+            <p className="text-xs md:text-sm lg:text-base text-gray-300 leading-relaxed max-w-prose mx-auto lg:mx-0">
               {description}
             </p>
           </div>

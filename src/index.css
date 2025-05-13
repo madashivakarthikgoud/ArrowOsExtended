@@ -1,3 +1,4 @@
+/* Base Styles */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,14 +14,14 @@ html {
 body {
   @apply bg-dark-950 text-white font-sans antialiased;
   background-image: 
-    radial-gradient(circle at 100% 0%, rgb(13, 148, 136, 0.12) 0%, transparent 25%),
-    radial-gradient(circle at 0% 90%, rgb(12, 141, 240, 0.1) 0%, transparent 30%);
+    radial-gradient(circle at 100% 0%, rgb(13 148 136 / 0.12) 0%, transparent 25%),
+    radial-gradient(circle at 0% 90%, rgb(12 141 240 / 0.1) 0%, transparent 30%);
   background-attachment: fixed;
 }
 
+/* Scrollbar Styles */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  @apply w-2 h-2;
 }
 
 ::-webkit-scrollbar-track {
@@ -29,7 +30,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   @apply bg-dark-700/80 rounded-full backdrop-blur-sm;
-  border: 2px solid rgba(0, 0, 0, 0);
+  border: 2px solid transparent;
   background-clip: padding-box;
 }
 
@@ -37,61 +38,72 @@ body {
   @apply bg-dark-600/90;
 }
 
-.glass {
-  @apply bg-dark-900/60 backdrop-blur-md border border-dark-800/50;
-}
-
-.glass-modern {
-  @apply bg-dark-900/40 backdrop-blur-xl border border-white/10 shadow-xl;
-  box-shadow: 
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1);
-}
-
-.glass-light {
-  @apply bg-white/10 backdrop-blur-xl border border-white/20;
-}
-
-.text-gradient {
-  @apply text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-secondary-400 to-accent-400;
-}
-
+/* Component Layer */
 @layer components {
+  /* Glass Effects */
+  .glass {
+    @apply bg-dark-900/60 backdrop-blur-md border border-dark-800/50;
+  }
+
+  .glass-modern {
+    @apply bg-dark-900/40 backdrop-blur-xl border-white/10 shadow-xl;
+    box-shadow: 
+      0 4px 6px -1px rgb(0 0 0 / 0.1),
+      0 2px 4px -1px rgb(0 0 0 / 0.06),
+      inset 0 1px 1px rgb(255 255 255 / 0.1);
+  }
+
+  .glass-light {
+    @apply bg-white/10 backdrop-blur-xl border-white/20;
+  }
+
+  /* Buttons */
   .btn {
-    @apply px-4 py-2 rounded-2xl font-medium transition-all duration-300 inline-flex items-center gap-2 backdrop-blur-sm;
+    @apply px-4 py-2 rounded-2xl font-medium transition-all duration-300 
+           inline-flex items-center gap-2 backdrop-blur-sm;
   }
-  
+
   .btn-primary {
-    @apply bg-primary-600/90 hover:bg-primary-600 text-white shadow-lg shadow-primary-600/25;
+    @apply bg-primary-600/90 hover:bg-primary-600 text-white 
+           shadow-lg shadow-primary-600/25;
   }
-  
+
   .btn-secondary {
-    @apply bg-dark-800/80 hover:bg-dark-700/90 text-white border border-dark-700/50;
+    @apply bg-dark-800/80 hover:bg-dark-700/90 text-white 
+           border border-dark-700/50;
   }
-  
+
   .btn-outline {
-    @apply border border-dark-700/50 hover:bg-dark-800/50 text-white backdrop-blur-sm;
+    @apply border border-dark-700/50 hover:bg-dark-800/50 text-white 
+           backdrop-blur-sm;
   }
-  
+
+  /* Navigation */
   .nav-item {
-    @apply px-3 py-1.5 rounded-xl text-dark-100 hover:text-white transition-colors backdrop-blur-sm;
+    @apply px-3 py-1.5 rounded-xl text-dark-100 hover:text-white 
+           transition-colors backdrop-blur-sm;
   }
-  
+
   .nav-item-active {
     @apply text-white bg-dark-800/70 backdrop-blur-md;
   }
+
+  /* Effects */
+  .glow {
+    box-shadow: 0 0 20px 2px rgb(12 141 240 / 0.15);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 20px 2px rgb(249 115 22 / 0.15);
+  }
+
+  .text-gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-r 
+           from-primary-400 via-secondary-400 to-accent-400;
+  }
 }
 
-.glow {
-  box-shadow: 0 0 20px 2px rgba(12, 141, 240, 0.15);
-}
-
-.glow-accent {
-  box-shadow: 0 0 20px 2px rgba(249, 115, 22, 0.15);
-}
-
-/* iOS 18-inspired animations */
+/* Animations */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -101,55 +113,40 @@ body {
   animation: float 6s ease-in-out infinite;
 }
 
-/* Enhanced mobile responsiveness */
+/* Responsive Design */
 @media (max-width: 640px) {
   .glass-modern {
     @apply rounded-xl p-3;
   }
-  
+
   .btn {
     @apply px-3 py-1.5 text-sm;
   }
-  
+
   h1 {
     @apply text-3xl;
   }
-  
+
   .nav-item {
     @apply px-2 py-1;
   }
 }
 
+/* Interaction States */
+@media (pointer: fine) {
+  .navigation-buttons {
+    @apply opacity-80 transition-opacity duration-300;
+    
+    &:hover {
+      @apply opacity-100;
+    }
+  }
+}
 
-
+/* Browser Support Fallbacks */
 @supports (backdrop-filter: blur(12px)) {
   .backdrop-blur-xl {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
 }
-
-@media (pointer: fine) {
-  .navigation-buttons {
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-  }
-  
-  .navigation-buttons:hover {
-    opacity: 1;
-  }
-}
-/* 
-  { id: 1, url: 'images/1.png', title: 'Home Screen', description: 'Clean and minimalist home screen design' },
-  { id: 2, url: 'images/2.png', title: 'Lockscreen', description: 'You can show weather information on Lockscreen now' },
-  { id: 3, url: 'images/3.png', title: 'Quick Settings', description: 'Redesigned quick settings with some customizations' },
-  { id: 4, url: 'images/4.png', title: 'Extensions Menu', description: 'Setup your styling for UI and enhancement here' },
-  { id: 5, url: 'images/5.png', title: 'Themes Menu', description: 'Setup your themes, font, icon packs, and icon shape here' },
-  { id: 6, url: 'images/6.png', title: 'Statusbar Menu', description: 'Make your statusbar cooler here' },
-  { id: 7, url: 'images/8.png', title: 'Quick Settings Menu', description: 'Intuitive settings with extended options' },
-  { id: 9, url: 'images/9.png', title: 'Notifications Menu', description: 'Enhance your notifications so they’re never boring' },
-  { id: 10, url: 'images/10.png', title: 'Lockscreen Menu', description: 'Increase your privacy and interface for lockscreen menu' },
-  { id: 14, url: 'images/14.png', title: 'Misc Menu', description: 'Elevate your experience here' },
-  { id: 15, url: 'images/15.png', title: 'Weather Settings', description: 'Show weather info in Home Screen and Lockscreen' },
-  { id: 16, url: 'images/16.png', title: 'Spoofing Settings', description: 'Spoof your device for safety and unlimited GPhotos backup' },
-  { id: 18, url: 'images/18.png', title: 'GameSpace Settings', description: 'Increase your gaming experience' }, */
