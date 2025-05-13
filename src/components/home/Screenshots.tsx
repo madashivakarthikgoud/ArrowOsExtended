@@ -60,13 +60,26 @@ const hintVariants = {
 
 const Screenshots: React.FC = () => {
   const [[currentIndex, direction], setIndex] = useState<[number, number]>([0, 0]);
-  const [showHint, setShowHint] = useState(false);
+  const [isSmall, setIsSmall] = useState(false);
+  const [hasSwiped, setHasSwiped] = useState(false);
   const autoPlayRef = useRef<number>();
 
-  // Show hint only on small screens
+  // Track small screens and resize changes
   useEffect(() => {
-    if (window.innerWidth <= 410) setShowHint(true);
+    const check = () => setIsSmall(window.innerWidth <= 410);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
+
+  // Auto-advance on large screens
+  useEffect(() => {
+    if (!isSmall) {
+      clearTimeout(autoPlayRef.current);
+      autoPlayRef.current = window.setTimeout(() => paginate(1), 5000);
+      return () => clearTimeout(autoPlayRef.current);
+    }
+  }, [currentIndex, isSmall]);
 
   const paginate = useCallback((dir: number) => {
     setIndex(([i]) => [
@@ -76,7 +89,9 @@ const Screenshots: React.FC = () => {
   }, []);
 
   const handleDragStart = () => {
-    if (showHint) setShowHint(false);
+    if (isSmall && !hasSwiped) {
+      setHasSwiped(true);
+    }
   };
 
   const handleDragEnd = (_: any, info: PanInfo) => {
@@ -84,15 +99,6 @@ const Screenshots: React.FC = () => {
     if (info.offset.x < -threshold) paginate(1);
     else if (info.offset.x > threshold) paginate(-1);
   };
-
-  // Auto-advance on large screens
-  useEffect(() => {
-    if (window.innerWidth > 410) {
-      clearTimeout(autoPlayRef.current);
-      autoPlayRef.current = window.setTimeout(() => paginate(1), 5000);
-      return () => clearTimeout(autoPlayRef.current);
-    }
-  }, [currentIndex, paginate]);
 
   // Safe index
   const safeIndex = Math.max(0, Math.min(currentIndex, screenshots.length - 1));
@@ -106,11 +112,9 @@ const Screenshots: React.FC = () => {
       centered
       className="bg-dark-950 py-12 md:py-20 lg:py-24"
     >
-      {/* Outer wrapper now overflow-visible to show full image */}
       <div className="relative px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto overflow-visible cursor-grab">
         <AnimatePresence>
-          {/* Hint centered on image, small screens */}
-          {showHint && (
+          {isSmall && !hasSwiped && (
             <motion.div
               key="hint"
               variants={hintVariants}

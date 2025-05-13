@@ -133,8 +133,8 @@ const Hero: React.FC = () => {
                   className="
       relative
       rounded-[2.5rem] md:rounded-[3rem]
-      p-[12px] md:p-[14px]
-      bg-dark-950/90
+      p-[8px] md:p-[10px]
+      bg-black
       overflow-hidden
       shadow-2xl
       backdrop-blur-xl
