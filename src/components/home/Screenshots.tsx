@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import Section from '../ui/Section';
 
@@ -18,26 +18,37 @@ const screenshots = [
   { id: 18, url: 'images/18.png', title: 'GameSpace Settings', description: 'Increase your gaming experience' },
 ];
 
+// Slide + Fade Variants
 const fadeVariants = {
-  enter: { opacity: 0 },
-  center: { opacity: 1, transition: { duration: 0.6, ease: 'easeInOut' } },
-  exit:  { opacity: 0, transition: { duration: 0.6, ease: 'easeInOut' } },
+  enter: (dir: number) => ({ x: dir > 0 ? 150 : -150, opacity: 0 }),
+  center: { x: 0, opacity: 1, transition: { duration: 0.6, ease: 'easeInOut' } },
+  exit: (dir: number) => ({ x: dir < 0 ? 150 : -150, opacity: 0, transition: { duration: 0.6, ease: 'easeInOut' } }),
 };
 
 const Screenshots: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [[currentIndex, direction], setIndex] = useState([0, 0]);
+  const autoPlayRef = useRef<number>();
 
-  const nextSlide = () => setCurrentIndex(i => (i + 1) % screenshots.length);
-  const prevSlide = () => setCurrentIndex(i => (i === 0 ? screenshots.length - 1 : i - 1));
+  const paginate = useCallback((dir: number) => {
+    setIndex(([i]) => [
+      (i + dir + screenshots.length) % screenshots.length,
+      dir,
+    ]);
+  }, []);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
-    const swipeThreshold = 100;
-    if (info.offset.x < -swipeThreshold) {
-      nextSlide();
-    } else if (info.offset.x > swipeThreshold) {
-      prevSlide();
-    }
+    const threshold = 80;
+    if (info.offset.x < -threshold) paginate(1);
+    else if (info.offset.x > threshold) paginate(-1);
   };
+
+  useEffect(() => {
+    clearTimeout(autoPlayRef.current);
+    autoPlayRef.current = window.setTimeout(() => paginate(1), 5000);
+    return () => clearTimeout(autoPlayRef.current);
+  }, [currentIndex, paginate]);
+
+  const { url, title, description } = screenshots[currentIndex];
 
   return (
     <Section
@@ -47,51 +58,47 @@ const Screenshots: React.FC = () => {
       centered
       className="bg-dark-950 py-12 md:py-20 lg:py-24"
     >
-      <div className="relative px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-        <AnimatePresence initial={false} mode="wait">
+      <div className="relative px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto overflow-hidden cursor-grab">
+        <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
-            key={screenshots[currentIndex].id}
+            key={url}
+            custom={direction}
             variants={fadeVariants}
             initial="enter"
             animate="center"
             exit="exit"
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.2}
+            dragElastic={0.25}
             onDragEnd={handleDragEnd}
-            className="w-full flex flex-col lg:flex-row items-center justify-center gap-8 cursor-grab"
+            className="flex flex-col lg:flex-row items-center justify-center gap-8 w-full"
           >
-            {/* Swipeable Image with rounded edges */}
-            <div className="flex-shrink-0 w-2/3 sm:w-1/2 md:w-1/3 lg:w-1/4 aspect-[9/19]">
-              <img
-                src={screenshots[currentIndex].url}
-                alt={screenshots[currentIndex].title}
+            {/* Responsive Image */}
+            <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 aspect-[9/19] flex-shrink-0">
+              <motion.img
+                src={url}
+                alt={title}
                 className="w-full h-full object-cover rounded-3xl shadow-lg"
-                loading="lazy"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { duration: 0.7 } }}
+                exit={{ opacity: 0, transition: { duration: 0.5 } }}
               />
             </div>
 
-            {/* Caption & Indicators */}
-            <div className="mt-6 lg:mt-0 text-center lg:text-left flex-1">
+            {/* Responsive Text below image on small screens */}
+            <motion.div
+              className="w-full lg:w-auto text-center lg:text-left"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { delay: 0.3, duration: 0.7 } }}
+              exit={{ opacity: 0, transition: { duration: 0.5 } }}
+            >
               <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
-                {screenshots[currentIndex].title}
+                {title}
               </h3>
               <p className="mt-2 text-sm sm:text-base text-gray-400">
-                {screenshots[currentIndex].description}
+                {description}
               </p>
-              <div className="mt-4 flex justify-center lg:justify-start space-x-2">
-                {screenshots.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentIndex(idx)}
-                    className={`h-2 w-8 rounded-full transition-all duration-300 ${
-                      idx === currentIndex ? 'bg-primary-500' : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
+            </motion.div>
           </motion.div>
         </AnimatePresence>
       </div>
