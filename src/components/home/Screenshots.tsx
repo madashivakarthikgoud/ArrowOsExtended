@@ -3,10 +3,19 @@ import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import Section from '../ui/Section';
 
 const screenshots = [
-  { id: 1, url: 'images/homeScreen.jpg', title: 'Home Screen', description: 'Clean and minimalist home screen design' },
-  { id: 2, url: 'images/qsImage.jpg', title: 'Quick Settings', description: 'Redesigned quick settings with customizable tiles' },
-  { id: 3, url: 'images/settingsImage.jpg', title: 'Settings', description: 'Intuitive settings with extended options' },
-  { id: 4, url: 'images/heroImage.jpg', title: 'Lockscreen', description: 'Enhanced lockscreen with custom clock styles' },
+  { id: 1, url: 'images/1.png', title: 'Home Screen', description: 'Clean and minimalist home screen design' },
+  { id: 2, url: 'images/2.png', title: 'Lockscreen', description: 'You can show weather informations in Lockscreen now' },
+  { id: 3, url: 'images/3.png', title: 'Quick Settings', description: 'Redesigned quick settings with some customitations' },
+  { id: 4, url: 'images/4.png', title: 'Extensions Menu', description: 'setup your styling for UI and enchancement here' },
+  { id: 5, url: 'images/5.png', title: 'Themes Menu', description: 'Setup your themes, font, icon packs, and icon shape here' },
+  { id: 6, url: 'images/6.png', title: 'Statusbar Menu', description: 'Make your statusbar cooler here' },
+  { id: 7, url: 'images/8.png', title: 'Quick Settings Menu', description: 'Intuitive settings with extended options' },
+  { id: 9, url: 'images/9.png', title: 'Notifications Menu', description: 'Enhance your notifications so it is not bored' },
+  { id: 10, url: 'images/10.png', title: 'Lockscreen Menu', description: 'Increase your privacy and interface for lockscreen menu' },
+  { id: 14, url: 'images/14.png', title: 'Misc Menu', description: 'Elevate your experience here' },
+  { id: 15, url: 'images/15.png', title: 'Weather Settings', description: 'Show weather info in Home Screen and Lockscreen' },
+  { id: 16, url: 'images/16.png', title: 'Spoofing Settings', description: 'Spoof your device for pass integrity and certificate of Play Store also get unlimited Gphotos backup' },
+  { id: 18, url: 'images/18.png', title: 'GameSpace Settings', description: 'Increase your gaming experience' },
 ];
 
 const fadeVariants = {

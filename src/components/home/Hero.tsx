@@ -130,7 +130,7 @@ const Hero: React.FC = () => {
               <div className="absolute inset-0 z-10 rounded-[2.5rem] md:rounded-[3rem] border-[12px] md:border-[14px] border-dark-950/90 overflow-hidden shadow-2xl backdrop-blur-xl">
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary-500/10 via-secondary-500/10 to-accent-500/10" />
                 <img
-                  src="images/heroImage.jpg"
+                  src="images/1.png"
                   alt="ArrowOS-Extended screenshot"
                   className="w-full h-full object-cover rounded-[2rem] md:rounded-[2.25rem]"
                 />
