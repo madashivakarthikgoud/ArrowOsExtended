@@ -119,3 +119,37 @@ body {
     @apply px-2 py-1;
   }
 }
+
+
+
+@supports (backdrop-filter: blur(12px)) {
+  .backdrop-blur-xl {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+@media (pointer: fine) {
+  .navigation-buttons {
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+  
+  .navigation-buttons:hover {
+    opacity: 1;
+  }
+}
+/* 
+  { id: 1, url: 'images/1.png', title: 'Home Screen', description: 'Clean and minimalist home screen design' },
+  { id: 2, url: 'images/2.png', title: 'Lockscreen', description: 'You can show weather information on Lockscreen now' },
+  { id: 3, url: 'images/3.png', title: 'Quick Settings', description: 'Redesigned quick settings with some customizations' },
+  { id: 4, url: 'images/4.png', title: 'Extensions Menu', description: 'Setup your styling for UI and enhancement here' },
+  { id: 5, url: 'images/5.png', title: 'Themes Menu', description: 'Setup your themes, font, icon packs, and icon shape here' },
+  { id: 6, url: 'images/6.png', title: 'Statusbar Menu', description: 'Make your statusbar cooler here' },
+  { id: 7, url: 'images/8.png', title: 'Quick Settings Menu', description: 'Intuitive settings with extended options' },
+  { id: 9, url: 'images/9.png', title: 'Notifications Menu', description: 'Enhance your notifications so they’re never boring' },
+  { id: 10, url: 'images/10.png', title: 'Lockscreen Menu', description: 'Increase your privacy and interface for lockscreen menu' },
+  { id: 14, url: 'images/14.png', title: 'Misc Menu', description: 'Elevate your experience here' },
+  { id: 15, url: 'images/15.png', title: 'Weather Settings', description: 'Show weather info in Home Screen and Lockscreen' },
+  { id: 16, url: 'images/16.png', title: 'Spoofing Settings', description: 'Spoof your device for safety and unlimited GPhotos backup' },
+  { id: 18, url: 'images/18.png', title: 'GameSpace Settings', description: 'Increase your gaming experience' }, */

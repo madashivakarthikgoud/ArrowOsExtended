@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import Section from '../ui/Section';
 
 const screenshots = [
@@ -15,120 +14,164 @@ const screenshots = [
   { id: 14, url: 'images/14.png', title: 'Misc Menu', description: 'Elevate your experience here' },
   { id: 15, url: 'images/15.png', title: 'Weather Settings', description: 'Show weather info in Home Screen and Lockscreen' },
   { id: 16, url: 'images/16.png', title: 'Spoofing Settings', description: 'Spoof your device for safety and unlimited GPhotos backup' },
-  { id: 18, url: 'images/18.png', title: 'GameSpace Settings', description: 'Increase your gaming experience' },
-
+  { id: 18, url: 'images/18.png', title: 'GameSpace Settings', description: 'Increase your gaming experience' }, 
 ];
 
-const fadeVariants = {
-  enter: dir => ({ x: dir > 0 ? 150 : -150, opacity: 0 }),
-  center: { x: 0, opacity: 1, transition: { duration: 0.6, ease: 'easeInOut' } },
-  exit: dir => ({ x: dir < 0 ? 150 : -150, opacity: 0, transition: { duration: 0.6, ease: 'easeInOut' } }),
-};
-
 const Screenshots = () => {
-  const [[currentIndex, direction], setIndex] = useState([0, 0]);
-  const [hasSwiped, setHasSwiped] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const dragStart = useRef(0);
   const autoPlayRef = useRef();
+  const imageRef = useRef(null);
+  const containerRef = useRef();
 
-  const paginate = useCallback(dir => {
-    setIndex(([i]) => [ (i + dir + screenshots.length) % screenshots.length, dir ]);
-    setHasSwiped(true);
+  const paginate = useCallback(
+    dir => {
+      setCurrentIndex(prev => (prev + dir + screenshots.length) % screenshots.length);
+      setHasInteracted(true);
+      clearInterval(autoPlayRef.current);
+    },
+    [screenshots.length]
+  );
+
+  // Preload images with priority
+  useEffect(() => {
+    const preloadImages = [
+      screenshots[(currentIndex + 1) % screenshots.length].url,
+      screenshots[(currentIndex - 1 + screenshots.length) % screenshots.length].url,
+    ];
+
+    preloadImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      img.loading = 'eager';
+    });
+  }, [currentIndex]);
+
+  // Unified gesture handling
+  const handleDragStart = useCallback(clientX => {
+    dragStart.current = clientX;
   }, []);
 
-  const handleDragEnd = (_event, info: PanInfo) => {
-    setIsDragging(false);
-    const threshold = 80;
-    if (info.offset.x < -threshold) paginate(1);
-    else if (info.offset.x > threshold) paginate(-1);
-  };
-  const handleDragStart = () => setIsDragging(true);
+  const handleDragEnd = useCallback(
+    clientX => {
+      const delta = dragStart.current - clientX;
+      const threshold = isMobile ? 40 : 80;
+      if (Math.abs(delta) > threshold) paginate(delta > 0 ? 1 : -1);
+    },
+    [isMobile, paginate]
+  );
 
+  // Touch handlers
+  const handleTouchStart = useCallback(e => handleDragStart(e.touches[0].clientX), [handleDragStart]);
+  const handleTouchEnd = useCallback(e => handleDragEnd(e.changedTouches[0].clientX), [handleDragEnd]);
+
+  // Mouse handlers
+  const handleMouseDown = useCallback(e => {
+    handleDragStart(e.clientX);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }, [handleDragStart]);
+
+  const handleMouseMove = useCallback(e => e.preventDefault(), []);
+  const handleMouseUp = useCallback(e => {
+    handleDragEnd(e.clientX);
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  }, [handleDragEnd, handleMouseMove]);
+
+  // Responsive checks
   useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth < 640);
-    onResize(); window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Optimized autoplay
   useEffect(() => {
-    if (!isMobile) {
-      clearTimeout(autoPlayRef.current);
-      autoPlayRef.current = window.setTimeout(() => paginate(1), 5000);
+    if (!isMobile && !hasInteracted) {
+      autoPlayRef.current = setInterval(() => paginate(1), 4500);
     }
-    return () => clearTimeout(autoPlayRef.current);
-  }, [currentIndex, paginate, isMobile]);
+    return () => clearInterval(autoPlayRef.current);
+  }, [isMobile, hasInteracted, paginate]);
 
   const { url, title, description } = screenshots[currentIndex];
-  const firstSlide = screenshots[0];
-  const showSwipeHint = isMobile && !hasSwiped && !isDragging;
+  const showSwipeHint = !hasInteracted;
 
   return (
-    <Section id="screenshots" title="Experience ArrowOS-Extended" subtitle="See how our custom ROM transforms your Android experience." centered className="bg-dark-950 py-12">
-      <div className="relative px-4 max-w-4xl mx-auto overflow-hidden cursor-grab">
-        {/* Invisible placeholder of first slide to prevent blank gap */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-          <img
-            src={firstSlide.url}
-            alt={firstSlide.title}
-            className="w-full h-full object-contain rounded-3xl opacity-0"
-          />
-          <div className="absolute bottom-8 left-8 text-left opacity-0">
-            <h3 className="text-3xl font-bold text-white">{firstSlide.title}</h3>
-            <p className="mt-2 text-base text-gray-400">{firstSlide.description}</p>
+    <Section id="screenshots" title="Experience ArrowOS-Extended" subtitle="See how our custom ROM transforms your Android experience." centered className="bg-dark-950 py-8 md:py-12">
+      <div 
+        ref={containerRef}
+        className="relative px-4 max-w-4xl mx-auto select-none"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        style={{ touchAction: 'pan-y' }}
+      >
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-6 w-full">
+          {/* Image Container */}
+          <div className="w-full lg:w-1/2 xl:w-1/3 flex-shrink-0 relative"
+            style={{ maxWidth: 'min(100%, 400px)' }}>
+            <img
+              ref={imageRef}
+              src={url}
+              alt={title}
+              loading="eager"
+              className="w-full h-auto object-contain rounded-xl md:rounded-2xl shadow-xl transition-opacity duration-200"
+              style={{ 
+                aspectRatio: '9/16',
+                opacity: 1,
+                imageRendering: '-webkit-optimize-contrast'
+              }}
+            />
+            
+            {/* Swipe Indicator */}
+            {showSwipeHint && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                style={{ top: '50%', transform: 'translateY(-50%)' }}>
+                <div className="flex items-center gap-2 text-white backdrop-blur-sm bg-black/30 px-4 py-2 rounded-full shadow-lg border border-white/10 animate-pulse"
+                  style={{
+                    fontSize: 'clamp(0.75rem, 1.5vw, 1rem)',
+                    padding: 'clamp(6px, 1.2vw, 10px) clamp(12px, 2vw, 16px)'
+                  }}>
+                  <svg 
+                    className="inline-block"
+                    style={{ width: 'clamp(16px, 2.5vw, 20px)', height: 'clamp(16px, 2.5vw, 20px)' }}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  <span className="whitespace-nowrap">
+                    {isMobile ? 'Swipe' : 'Drag'}
+                  </span>
+                  <svg 
+                    className="inline-block"
+                    style={{ width: 'clamp(16px, 2.5vw, 20px)', height: 'clamp(16px, 2.5vw, 20px)' }}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Text Content */}
+          <div className="w-full lg:w-auto text-center lg:text-left px-4 md:px-0">
+            <h3 className="text-xl md:text-2xl xl:text-3xl font-bold text-white mb-2 md:mb-3">
+              {title}
+            </h3>
+            <p className="text-sm md:text-base text-gray-300 leading-relaxed max-w-prose">
+              {description}
+            </p>
           </div>
         </div>
-
-        <AnimatePresence initial={false} custom={direction} mode="wait">
-          <motion.div
-            key={url}
-            custom={direction}
-            variants={fadeVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.25}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-            className="relative flex flex-col lg:flex-row items-center justify-center gap-8 w-full"
-          >
-            <div className="w-full lg:w-1/3 flex-shrink-0">
-              <motion.img
-                src={url}
-                alt={title}
-                className="w-full h-auto object-contain rounded-3xl shadow-lg"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { duration: 0.7 } }}
-                exit={{ opacity: 0, transition: { duration: 0.5 } }}
-              />
-            </div>
-            <motion.div
-              className="w-full lg:w-auto text-center lg:text-left"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.3, duration: 0.7 } }}
-              exit={{ opacity: 0, transition: { duration: 0.5 } }}
-            >
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">{title}</h3>
-              <p className="mt-2 text-sm sm:text-base text-gray-400">{description}</p>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-
-        {showSwipeHint && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="flex items-center gap-2 text-white opacity-75 animate-pulse">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              <span className="text-sm">Swipe to navigate</span>
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </div>
-        )}
       </div>
     </Section>
   );
