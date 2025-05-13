@@ -21,6 +21,6 @@ export const devices: Device[] = [
     androidVersion: '13',
     image: 'images/pocox3.avif',
     downloadUrl: 'https://sourceforge.net/projects/arata-labs/files/ArrowOS-Extended/VANILLA/surya/ArrowExtended-v13.3-surya-OFFICIAL-20250510-VANILLA.zip/download',
-    changelogUrl: ''
+    changelogUrl: 'https://github.com/ArrowOS-Ext/OTA/blob/arrow-13.2/changelogs/surya.md'
   }
 ];
