@@ -15,7 +15,7 @@ import {
   Eye, 
   Layers, 
   AppWindow,
-  FolderCode,
+  FileCode,
   Gamepad2
 } from 'lucide-react';
 
@@ -134,7 +134,7 @@ export const features: Feature[] = [
         highlight: true
       },
       {
-        icon: FolderCode,
+        icon: FileCode,
         title: 'Hide ADB Options',
         description: 'Features for hiding ADB and Developers options for selected apps'
       },
