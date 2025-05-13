@@ -43,10 +43,14 @@ const Screenshots: React.FC = () => {
   };
 
   useEffect(() => {
+    const isLargeScreen = window.innerWidth > 410;
     clearTimeout(autoPlayRef.current);
-    autoPlayRef.current = window.setTimeout(() => paginate(1), 5000);
+    if (isLargeScreen) {
+      autoPlayRef.current = window.setTimeout(() => paginate(1), 5000);
+    }
     return () => clearTimeout(autoPlayRef.current);
   }, [currentIndex, paginate]);
+
 
   const { url, title, description } = screenshots[currentIndex];
 
