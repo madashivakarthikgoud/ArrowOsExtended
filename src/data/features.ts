@@ -8,13 +8,15 @@ import {
   Clock, 
   Cloud, 
   Lock, 
-  Bot, 
+  Ghost, 
   Image, 
   Wrench, 
   Heart, 
   Eye, 
   Layers, 
-  AppWindow 
+  AppWindow,
+  FolderCode,
+  Gamepad2
 } from 'lucide-react';
 
 export interface Feature {
@@ -67,7 +69,7 @@ export const features: Feature[] = [
         icon: Eye,
         title: 'Privacy Dashboard',
         description: 'Comprehensive dashboard to monitor and control app permissions and data access.'
-      }
+      },
     ]
   },
   {
@@ -121,14 +123,25 @@ export const features: Feature[] = [
         description: 'Frequent OTA updates that bring the latest features and security patches.'
       },
       {
-        icon: Bot,
-        title: 'AI Enhancements',
-        description: 'Smart features powered by AI to improve your daily usage experience.'
+        icon: Ghost,
+        title: 'Spoofing Options',
+        description: 'Smart features for make a pass Play Store certificate and pass some apps needed Meet Device Integrity.'
       },
       {
         icon: Heart,
         title: 'Community Driven',
         description: 'Features and improvements based on community feedback and contributions.',
+        highlight: true
+      },
+      {
+        icon: FolderCode,
+        title: 'Hide ADB Options',
+        description: 'Features for hiding ADB and Developers options for selected apps'
+      },
+      {
+        icon: Gamepad2,
+        title: 'Game Space',
+        description: 'Enhanced your gaming experienced for block gesture, block notifications, restrict screenshots, and more',
         highlight: true
       }
     ]

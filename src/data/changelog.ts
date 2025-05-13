@@ -15,8 +15,12 @@ export const changelogData: ChangelogEntry[] = [
     date: 'May 05, 2025',
     changes: [
       {
-        type: 'feature',
+        type: 'security',
         description: 'Hide QS in secure Lockscreen'
+      },
+      {
+        type: 'security',
+        description: 'Allow disable power menu in secure Lock Screen'
       },
       {
         type: 'feature',

@@ -40,12 +40,12 @@ const DownloadSection: React.FC = () => {
                 Browse All Devices
               </Button>
               <Button
-                href="https://github.com/ArrowOS-Extended/documentation"
+                href="https://github.com/ArrowOS-Ext/android_manifest"
                 variant="outline"
                 size="lg"
                 external
               >
-                Installation Guide
+                Start building
               </Button>
             </div>
 

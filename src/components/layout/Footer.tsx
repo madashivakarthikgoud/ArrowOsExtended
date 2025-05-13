@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex space-x-6">
               <a
-                href="https://github.com/ArrowOS-Ext/OTA"
+                href="https://github.com/ArrowOS-Ext/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-dark-300 hover:text-white transition-colors"
@@ -58,10 +58,9 @@ const Footer: React.FC = () => {
             <h3 className="font-semibold mb-4 text-lg">Resources</h3>
             <ul className="space-y-3 text-dark-300">
               {[
-                { label: 'GitHub', href: 'https://github.com/ArrowOS-Ext/OTA' },
+                { label: 'GitHub', href: 'https://github.com/ArrowOS-Ext/' },
                 { label: 'Telegram', href: 'https://t.me/arrowosextended_updates' },
-                { label: 'XDA Forums', href: '#' },
-                { label: 'SourceForge', href: 'https://sourceforge.net/projects/arrowos-extended' },
+                { label: 'SourceForge', href: 'https://sourceforge.net/projects/arata-labs/files/ArrowOS-Extended/' },
               ].map((item) => (
                 <li key={item.label}>
                   <a
