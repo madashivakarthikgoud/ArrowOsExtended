@@ -95,7 +95,7 @@ const Screenshots = () => {
   }, [isMobile, hasInteracted, paginate]);
 
   const { url, title, description } = screenshots[currentIndex];
-  const showSwipeHint = !hasInteracted && isMobile;
+  const showSwipeHint = !hasInteracted && true;
 
   return (
     <Section id="screenshots" 
