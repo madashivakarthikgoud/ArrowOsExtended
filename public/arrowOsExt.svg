@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A90E2" />
+      <stop offset="100%" stop-color="#9013FE" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.3" />
+    </filter>
+    <clipPath id="circleClip">
+      <circle cx="512" cy="512" r="500" />
+    </clipPath>
+  </defs>
+
+  <circle cx="512" cy="512" r="500" fill="url(#grad1)" filter="url(#shadow)" />
+
+  <g clip-path="url(#circleClip)">
+    <g transform="translate(210,360) scale(1.2)">
+      <path d="M256 0 L512 512 L256 640 L0 512 Z" fill="#FFF" />
+      <path d="M256 128 L448 512 L256 608 L64 512 Z" fill="#4A90E2" />
+    </g>
+  </g>
+</svg>

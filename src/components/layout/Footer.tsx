@@ -11,20 +11,30 @@ const Footer: React.FC = () => {
           {/* Logo & description */}
           <div className="md:col-span-2 flex flex-col space-y-4">
             <Link to="/" className="flex items-center space-x-3">
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="flex-shrink-0"
-              >
-                <path d="M12 2L3 9L12 16L21 9L12 2Z" className="fill-primary-500" />
-                <path d="M3 9V17L7 20V12L3 9Z" className="fill-primary-400" />
-                <path d="M21 9V17L17 20V12L21 9Z" className="fill-primary-600" />
-                <path d="M12 16V22L3 17V9L12 16Z" className="fill-primary-400 opacity-70" />
-                <path d="M12 16V22L21 17V9L12 16Z" className="fill-primary-600 opacity-70" />
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" className="w-8 h-8 flex-shrink-0">
+                <defs>
+                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#4A90E2" />
+                    <stop offset="100%" stopColor="#9013FE" />
+                  </linearGradient>
+                  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="10" stdDeviation="15" floodColor="#000" floodOpacity="0.3" />
+                  </filter>
+                  <clipPath id="circleClip">
+                    <circle cx="512" cy="512" r="500" />
+                  </clipPath>
+                </defs>
+
+                <circle cx="512" cy="512" r="500" fill="url(#grad1)" filter="url(#shadow)" />
+
+                <g clipPath="url(#circleClip)">
+                  <g transform="translate(210,360) scale(1.2)">
+                    <path d="M256 0 L512 512 L256 640 L0 512 Z" fill="#FFF" />
+                    <path d="M256 128 L448 512 L256 608 L64 512 Z" fill="#4A90E2" />
+                  </g>
+                </g>
               </svg>
+
               <span className="text-xl font-semibold">
                 ArrowOS<span className="text-primary-500">-Extended</span>
               </span>
